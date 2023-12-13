@@ -50,6 +50,7 @@ void optionsList(){
     printf("4.显示所有数据（仅基本信息）\n");// 显示所有数据
     printf("5.学生数据修改\n");           // 查询数据
     printf("6.数据保存\n");              // 数据保存
+    printf("7.数据读取\n");                //读取数据
     printf("0.退出\n");                 // 退出
     printf("请输入序号:");
     scanf("%d", &choice);              // 存储输入的选项序号
@@ -58,7 +59,7 @@ void optionsList(){
 
 //保存数据（链表）
 void saveData() {
-    FILE *file = fopen("data.txt", "w");//以写入模式打开文件
+    FILE *file = fopen("data.txt", "a");//以追加1// 模式打开文件
     if (file == NULL) {
         printf("打开文件失败\n");
         return;
@@ -73,6 +74,23 @@ void saveData() {
     fclose(file);
     printf("数据已保存到文件：“data.txt");
 }
+//读取数据
+void readData() {
+    FILE *file = fopen("data.txt", "r");//以读取模式打开文件
+    if (file == NULL) {
+        printf("打开文件失败\n");
+        return;
+    }
+    Contact_Person *p = head;
+    while (p != NULL) {
+        fscanf(file, "%lld  %s  %s  %s  %s  %s  %s  %lld  %s\n", &p->stuNum, p->name, p->sex, p->academic, p->major, p->province,
+               p->address, &p->phoneNum, p->emailNum);
+        p = p->pNext;
+    }
+    fclose(file);
+    printf("数据已从文件读取\n");
+}
+
 // 选项列表
 void luRu(){
 
@@ -688,6 +706,9 @@ int main(){
 
             case 6:
                 saveData();
+                break;
+            case 7:
+                readData();
                 break;
         }
         printf("\n");
